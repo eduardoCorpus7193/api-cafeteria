@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
     const Inventory = sequelize.define(
-        "inventorys",
+        "inventories",
       {
         id: {
           type: Sequelize.INTEGER.UNSIGNED,
@@ -21,7 +21,7 @@ module.exports = (sequelize, Sequelize) => {
           allowNull: false,
         },
         unit: {
-          type: Sequelize.VARCHAR(45),
+          type: Sequelize.STRING,
           allowNull: false,
         },
         expiryDate: {
@@ -49,7 +49,7 @@ module.exports = (sequelize, Sequelize) => {
       {
         timestamps: false,    
         freezeTableName: true,
-        tableName: "inventorys",
+        tableName: "inventories",
       }
     );
     

@@ -1,31 +1,150 @@
 const db = require("../db.js");
 
-const Inventory = db.employees;
+const Inventory = db.inventories;
 const keysArr = ["itemId", "quantity", "unit", "expiryDate"];
 keysArr.sort();
 
-//INVENTARIO: CREAR NUEVO, MODIFICAR, ELIMINAR, LISTAR, FILTAR POR ID
+// INVENTARIO: LISTAR, CREAR NUEVO, MODIFICAR, MODIFICAR PARCIALMENTE, ELIMINAR, FILTAR POR ID
 
-// Crear nuevo
-const gatInventoris = async (req, res) => {
-    try {
-        const inventorys = await Inventory.findAll();
-        res.status(200).json({ status: 200, data: books });
-    } catch (error) {
-        res.status(500).json({ status: 500, message: error.message });
+// listar
+const getInventories = async (req, res) => {
+  try {
+      const inventories = await Inventory.findAll();
+      res.json(inventories);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+}
+};
+
+const getInventory = async (req, res) => {
+  try {
+    const ID = req.params.id
+    const getInventory = await Inventory.findOne(
+      {
+        where: {
+          id : ID
+        }
+      });
+    return res.status(200).json({
+      ok : true,
+      status : 200,
+      body : getInventory
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 };
 
-const getEmployees = async (req, res) => {
-    try {
-      const employees = await Employee.findAll();
-      res.json(employees);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  };
+// Crear nuevo
+const createInventory = async (req, res) => {
+  try { 
+    const Name = req.body.name;
+    console.log(Name);
+    const foundInventory = await Inventory.findAll(
+      {
+        where: {
+          name : Name
+        }
+      });
 
+      console.log(foundInventory);
+    if(foundInventory.length) {
+      res.status(400).json({
+        msg : "Bad request",
+        status : 400,
+        body : "name already exist"
+      });
+      return;
+    } 
+    const inventory = await Inventory.create(req.body);
+    return res.json(inventory);
+    
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+//modificar
+const editInventory = async (req, res) => {
+  try {
+    const keysReq = Object.keys(req.body);
+    keysReq.sort();
+    if(!keysReq.every(isTheSameArray)){
+        res.status(400).json({
+          msg : "Bad request",
+          status : 400,
+          body : "Missing parameters"
+        });
+        return;
+      }
+    const id = req.params.id
+    const updateInventory = await Inventory.update(
+      req.body,
+      {
+        where: {
+          id : id
+        }
+      });
+    validateInventory(updateInventory);
+    return res.status(200).json({
+      ok : true,
+      status : 200,
+      body : updateInventory
+    });
+  }
+  catch(error){
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// modificar parcialmente
+const partialEditInventory = async (req, res) => {
+  try {
+    const id = req.params.id
+    const updateInventory = await Inventory.update(
+      req.body,
+      {
+        where: {
+          id : id
+        }
+      });
+    validateInventory(updateInventory);
+    return res.status(200).json({
+      ok : true,
+      status : 200,
+      body : updateInventory
+    });
+  }
+  catch(error){
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+//eliminar
+const deleteInventory = async (req, res) => {
+  try{
+    const id = req.params.id
+    const deleteInventory = await Inventory.destroy({
+      where:{
+        id : id
+      }
+    });
+    validateInventory(deleteInventory);
+    return res.status(200).json({
+      ok : true,
+      status : 200,
+      body : deleteInventory
+    });
+  } catch (error){
+    return res.status(500).json({ message: error.message });
+  }
+}
 
   module.exports = {
-    gatInventoris
+    getInventories,
+    createInventory,
+    editInventory,
+    partialEditInventory,
+    deleteInventory,
+    getInventory
   };

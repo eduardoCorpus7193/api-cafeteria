@@ -26,6 +26,25 @@ const getEmployees = async (req, res) => {
   }
 };
 
+const getEmployee = async (req, res) => {
+  try {
+    const ID = req.params.id
+    const getEmployee = await Employee.findOne(
+      {
+        where: {
+          id : ID
+        }
+      });
+    return res.status(200).json({
+      ok : true,
+      status : 200,
+      body : getEmployee
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 /* 
 {
     "name": "Jhon Doe",
@@ -37,7 +56,7 @@ const getEmployees = async (req, res) => {
 
 
 const createEmployee = async (req, res) => {
-  try { /*
+  try { 
     const rfc = req.body.RFC;
     console.log(rfc);
     const foundEmployee = await Employee.findAll(
@@ -55,7 +74,7 @@ const createEmployee = async (req, res) => {
         body : "RFC already exist"
       });
       return;
-    } */
+    } 
     const employee = await Employee.create(req.body);
     return res.json(employee);
     
@@ -143,5 +162,6 @@ const partialEditEmployee = async (req, res) => {
     getEmployees,
     createEmployee,
     editEmployee,
-    deleteEmployee
+    deleteEmployee,
+    getEmployee
   };

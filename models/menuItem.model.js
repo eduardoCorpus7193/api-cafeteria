@@ -8,11 +8,11 @@ module.exports = (sequelize, Sequelize) => {
           autoIncrement: true,
         },
         name: {
-          type: Sequelize.VARCHAR(45),
+          type: Sequelize.STRING,
           allowNull: true,
         },
         description: {
-          type: Sequelize.VARCHAR(128),
+          type: Sequelize.STRING,
           allowNull: true,
         },
         price: {
@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
           allowNull: true,
         },
         size: {
-          type: Sequelize.VARCHAR(45),
+          type: Sequelize.STRING,
           allowNull: false,
         },
         categoryId: {

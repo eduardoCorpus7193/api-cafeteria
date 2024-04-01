@@ -1,12 +1,14 @@
-const db = require("../db.js");
+const db = require("../db.js")
 
-const Category = db.categories;
-const keysArr = ["name", "description"];
+//Queries for the menu
+const MenuItem = db.menuItems;
+const keysArr = ["name", "description", "price", "size"];
 keysArr.sort();
 
+// Validate that the menu item exist to delete/edit/partial edit
 const isTheSameArray = (currentValue) => currentValue === keysArr;
-const validateCategory = (category) => {
-  if(!category){
+const validateMenuItem = (menuItem) => {
+  if(!menuItem){
     return res.status(400).json({
       msg : "Bad request",
       status : 400,
@@ -15,19 +17,10 @@ const validateCategory = (category) => {
   }
 }
 
-const getCategories = async (req, res) => {
-  try {
-    const categories = await Category.findAll();
-    res.json(categories);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-const getCategory = async (req, res) => {
+const getMenuItem = async (req, res) => {
   try {
     const ID = req.params.id
-    const getCategory = await Category.findOne(
+    const getMenuItem = await MenuItem.findOne(
       {
         where: {
           id : ID
@@ -36,45 +29,52 @@ const getCategory = async (req, res) => {
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : getCategory
+      body : getMenuItem
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-const createCategory = async (req, res) => {
+const getMenuItems = async (req, res) => {
+  try {
+    const menuItems = await MenuItem.findAll();
+    res.json(menuItems);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const createMenuItem = async (req, res) => {
   try {
     const Name = req.body.name;
     console.log(Name);
-    const foundCategory = await Category.findAll(
+    const foundMenuItem = await MenuItem.findAll(
       {
         where: {
           name : Name
         }
       });
-      console.log(foundCategory);
-    if(foundCategory.length) {
+
+      console.log(foundMenuItem);
+    if(foundMenuItem.length) {
       res.status(400).json({
         msg : "Bad request",
         status : 400,
-        body : "Category already exist"
+        body : "Menu item already exist"
       });
       return;
     }
-    const category = await Category.create(req.body);
-    return res.json(category);
+    const menuItem = await MenuItem.create(req.body);
+    return res.json(menuItem);
     
   } catch (error) {
-    return res.status(500).json({ 
-      msg: "Internal server error",
-      message: error.message 
-    });
+    return res.status(500).json({ message: error.message });
   }
 };
 
 // --- Edit ---
-const editCategory = async (req, res) => {
+const editMenuItem = async (req, res) => {
   try {
     const keysReq = Object.keys(req.body);
     keysReq.sort();
@@ -87,18 +87,18 @@ const editCategory = async (req, res) => {
         return;
       }
     const id = req.params.id
-    const updateCategory = await Category.update(
+    const updateMenuItem = await MenuItem.update(
       req.body,
       {
         where: {
           id : id
         }
       });
-    validateCategory(updateCategory);
+    validateBook(updateMenuItem);
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : updateCategory
+      body : updateMenuItem
     });
   }
   catch(error){
@@ -106,40 +106,40 @@ const editCategory = async (req, res) => {
   }
 }
 // -- delete -- 
-const deleteCategory = async (req, res) => {
+const deleteMenuItem = async (req, res) => {
   try{
     const id = req.params.id
-    const deleteCategory = await Category.destroy({
+    const deleteMenuItem = await MenuItem.destroy({
       where:{
         id : id
       }
     });
-    validateCategory(deleteCategory);
+    validateMenuItem(deleteMenuItem);
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : deleteCategory
+      body : deleteMenuItem
     });
   } catch (error){
     return res.status(500).json({ message: error.message });
   }
 }
 
-const partialEditCategory = async (req, res) => {
+const partialEditMenuItem = async (req, res) => {
   try {
     const id = req.params.id
-    const updateCategory = await Category.update(
+    const updateMenuItem = await MenuItem.update(
       req.body,
       {
         where: {
           id : id
         }
       });
-    validateCategory(updateCategory);
+    validateBook(MenuItemBook);
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : updateCategory
+      body : updateMenuItem
     });
   }
   catch(error){
@@ -148,10 +148,10 @@ const partialEditCategory = async (req, res) => {
 }
 
 module.exports = {
-  partialEditCategory,
-  getCategories,
-  createCategory,
-  editCategory,
-  deleteCategory,
-  getCategory
-}
+  partialEditMenuItem,
+  getMenuItems,
+  createMenuItem,
+  editMenuItem,
+  deleteMenuItem,
+  getMenuItem
+};
