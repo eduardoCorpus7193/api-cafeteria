@@ -36,6 +36,26 @@ const getMenuItem = async (req, res) => {
   }
 };
 
+const getMenuItemCategory = async (req, res) => {
+  try {
+    const categoryID = req.params.id
+    const getMenuItemCategory = await MenuItem.findAll(
+      {
+        where: {
+          categoryId : categoryID
+        }
+      });
+    return res.status(200).json({
+      ok : true,
+      status : 200,
+      body : getMenuItemCategory
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
 const getMenuItems = async (req, res) => {
   try {
     const menuItems = await MenuItem.findAll();
@@ -94,7 +114,7 @@ const editMenuItem = async (req, res) => {
           id : id
         }
       });
-    validateBook(updateMenuItem);
+    validateMenuItem(updateMenuItem);
     return res.status(200).json({
       ok : true,
       status : 200,
@@ -135,7 +155,7 @@ const partialEditMenuItem = async (req, res) => {
           id : id
         }
       });
-    validateBook(MenuItemBook);
+    validateMenuItem(updateMenuItem);
     return res.status(200).json({
       ok : true,
       status : 200,
@@ -153,5 +173,6 @@ module.exports = {
   createMenuItem,
   editMenuItem,
   deleteMenuItem,
-  getMenuItem
+  getMenuItem,
+  getMenuItemCategory
 };

@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
           autoIncrement: true,
         },
         feedbackText: {
-          type: Sequelize.VARCHAR(128),
+          type: Sequelize.STRING,
           allowNull: false,
         },
         created_at: {

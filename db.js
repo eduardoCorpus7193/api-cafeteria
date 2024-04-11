@@ -19,9 +19,12 @@ const db = {};
 db.sequelize = sequelize;  //acceso a la libreria
 db.sequelize = Sequelize;  //acceso a la instancia
 
-db.employees = require('./models/employee.model.js')(sequelize, Sequelize);  //modelo de employee
 db.categories = require('./models/category.model.js')(sequelize, Sequelize);  //modelo de category
-db.menuItems = require('./models/menuItem.model.js')(sequelize, Sequelize);  //modelo de menuItem
+db.employees = require('./models/employee.model.js')(sequelize, Sequelize);  //modelo de employee
+db.feedback = require('./models/feedback.model.js')(sequelize, Sequelize);  //modelo de feedback
 db.inventories = require('./models/inventory.model.js')(sequelize, Sequelize);  //modelo de inventory
+db.menuItems = require('./models/menuItem.model.js')(sequelize, Sequelize);  //modelo de menuItem
+db.orderItems = require('./models/orderItem.model.js')(sequelize, Sequelize);  //modelo de orderItem
+db.order = require('./models/order.model.js')(sequelize, Sequelize);  //modelo de order
 
 module.exports = db;

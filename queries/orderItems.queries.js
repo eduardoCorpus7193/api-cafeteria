@@ -1,16 +1,16 @@
 const db = require("../db.js")
 
-//Queries for the menu
+//Queries 
 const OrderItem = db.orderItems;
+const Inventory = db.inventories;
 const keysArr = ["orderId", "itemId", "quantity", "subtotal"];
 keysArr.sort();
 
 // INVENTARIO: LISTAR, CREAR NUEVO, MODIFICAR, MODIFICAR PARCIALMENTE, ELIMINAR, FILTAR POR ID
 
-// Validate that the menu item exist to delete/edit/partial edit
 const isTheSameArray = (currentValue) => currentValue === keysArr;
-const validateMenuItem = (menuItem) => {
-  if(!menuItem){
+const validateOrderItem = (orderItem) => {
+  if(!orderItem){
     return res.status(400).json({
       msg : "Bad request",
       status : 400,
@@ -19,10 +19,10 @@ const validateMenuItem = (menuItem) => {
   }
 }
 
-const getMenuItem = async (req, res) => {
+const getOrderItem = async (req, res) => {
   try {
     const ID = req.params.id
-    const getMenuItem = await MenuItem.findOne(
+    const getOrderItem = await OrderItem.findOne(
       {
         where: {
           id : ID
@@ -31,52 +31,54 @@ const getMenuItem = async (req, res) => {
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : getMenuItem
+      body : getOrderItem
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-const getMenuItems = async (req, res) => {
+const getOrderItems = async (req, res) => {
   try {
-    const menuItems = await MenuItem.findAll();
-    res.json(menuItems);
+    const orderItems = await OrderItem.findAll();
+    res.json(orderItems);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const createMenuItem = async (req, res) => {
+/*
+{
+    "orderId": "1",
+    "itemId": "5",
+    "quantity": "2",
+    "subtotal": "40"
+}
+*/
+
+const createOrderItem = async (req, res) => {
   try {
-    const Name = req.body.name;
-    console.log(Name);
-    const foundMenuItem = await MenuItem.findAll(
+    const ID = req.body.itemId;
+    console.log(ID);
+    const foundInventory = await Inventory.findOne(
       {
         where: {
-          name : Name
+          id : ID
         }
       });
-
-      console.log(foundMenuItem);
-    if(foundMenuItem.length) {
-      res.status(400).json({
-        msg : "Bad request",
-        status : 400,
-        body : "Menu item already exist"
-      });
-      return;
-    }
-    const menuItem = await MenuItem.create(req.body);
-    return res.json(menuItem);
-    
+      console.log(foundInventory);
+      const Quantity = req.body.quantity;
+      console.log(Quantity);
+      await foundInventory.decrement(['quantity'], { by: Quantity });
+    const orderItem = await OrderItem.create(req.body);
+    return res.json(orderItem);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
 // --- Edit ---
-const editMenuItem = async (req, res) => {
+const editOrderItem = async (req, res) => {
   try {
     const keysReq = Object.keys(req.body);
     keysReq.sort();
@@ -89,18 +91,18 @@ const editMenuItem = async (req, res) => {
         return;
       }
     const id = req.params.id
-    const updateMenuItem = await MenuItem.update(
+    const updateOrderItem = await OrderItem.update(
       req.body,
       {
         where: {
           id : id
         }
       });
-    validateBook(updateMenuItem);
+    validateBook(updateOrderItem);
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : updateMenuItem
+      body : updateOrderItem
     });
   }
   catch(error){
@@ -108,40 +110,40 @@ const editMenuItem = async (req, res) => {
   }
 }
 // -- delete -- 
-const deleteMenuItem = async (req, res) => {
+const deleteOrderItem = async (req, res) => {
   try{
     const id = req.params.id
-    const deleteMenuItem = await MenuItem.destroy({
+    const deleteOrderItem = await OrderItem.destroy({
       where:{
         id : id
       }
     });
-    validateMenuItem(deleteMenuItem);
+    validateOrderItem(deleteOrderItem);
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : deleteMenuItem
+      body : deleteOrderItem
     });
   } catch (error){
     return res.status(500).json({ message: error.message });
   }
 }
 
-const partialEditMenuItem = async (req, res) => {
+const partialEditOrderItem = async (req, res) => {
   try {
     const id = req.params.id
-    const updateMenuItem = await MenuItem.update(
+    const updateOrderItem = await OrderItem.update(
       req.body,
       {
         where: {
           id : id
         }
       });
-    validateBook(MenuItemBook);
+    validateBook(OrderItemBook);
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : updateMenuItem
+      body : updateOrderItem
     });
   }
   catch(error){
@@ -150,10 +152,10 @@ const partialEditMenuItem = async (req, res) => {
 }
 
 module.exports = {
-  partialEditMenuItem,
-  getMenuItems,
-  createMenuItem,
-  editMenuItem,
-  deleteMenuItem,
-  getMenuItem
+  partialEditOrderItem,
+  getOrderItems,
+  createOrderItem,
+  editOrderItem,
+  deleteOrderItem,
+  getOrderItem
 };

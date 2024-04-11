@@ -1,19 +1,19 @@
 module.exports = (sequelize, Sequelize) => {
     const Inventory = sequelize.define(
-        "inventories",
+        "inventory",
       {
         id: {
           type: Sequelize.INTEGER.UNSIGNED,
           primaryKey: true,
-          autoIncrement: true,
+          autoIncrement: true,  
         },
         itemId: {
           type: Sequelize.INTEGER.UNSIGNED,
           allowNull: false,  
           unique: true,
           references: {
-            model: 'menuItems',
-            kay: 'id'
+            model: 'menuItems',    //
+            key: 'id'
           }
         },
         quantity: {
@@ -49,7 +49,7 @@ module.exports = (sequelize, Sequelize) => {
       {
         timestamps: false,    
         freezeTableName: true,
-        tableName: "inventories",
+        tableName: "inventory",
       }
     );
     

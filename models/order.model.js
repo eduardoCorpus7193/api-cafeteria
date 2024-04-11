@@ -12,11 +12,11 @@ module.exports = (sequelize, Sequelize) => {
           allowNull: true,
         },
         clientName: {
-          type: Sequelize.VARCHAR(45),
-          allowNull: false,
+          type: Sequelize.STRING,
+          allowNull: true,
         },
         orderStatus: {
-          type: Sequelize.VARCHAR(45),
+          type: Sequelize.STRING,
           allowNull: false,
         },
         created_at: {

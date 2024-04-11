@@ -29,7 +29,7 @@ module.exports = (sequelize, Sequelize) => {
           unique: true,
           references: {
             model: 'category',
-            kay: 'id'
+            key: 'id'
           }
         },
         created_at: {

@@ -1,35 +1,25 @@
 const db = require("../db.js");
 
-const Inventory = db.inventories;
+const Order = db.orders;
 const keysArr = ["itemId", "quantity", "unit", "expiryDate"];
 keysArr.sort();
 
-// INVENTARIO: LISTAR, CREAR NUEVO, MODIFICAR, MODIFICAR PARCIALMENTE, ELIMINAR, FILTAR POR ID
-// Validate that the inventory exist to delete/edit/partial edit
-const isTheSameArray = (currentValue) => currentValue === keysArr;
-const validateInventory = (inventory) => {
-  if(!inventory){
-    return res.status(400).json({
-      msg : "Bad request",
-      status : 400,
-      body : "Impossible to find the given id"
-    });  
-  }
-}
+// LISTAR, CREAR NUEVO, MODIFICAR, MODIFICAR PARCIALMENTE, ELIMINAR, FILTAR POR ID
+
 // listar
-const getInventories = async (req, res) => {
+const getOrders = async (req, res) => {
   try {
-      const inventories = await Inventory.findAll();
-      res.json(inventories);
+      const orders = await Order.findAll();
+      res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
 }
 };
 
-const getInventory = async (req, res) => {
+const getOrder = async (req, res) => {
   try {
     const ID = req.params.id
-    const getInventory = await Inventory.findOne(
+    const getOrder = await Order.findOne(
       {
         where: {
           id : ID
@@ -38,7 +28,7 @@ const getInventory = async (req, res) => {
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : getInventory
+      body : getOrder
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -46,28 +36,28 @@ const getInventory = async (req, res) => {
 };
 
 // Crear nuevo
-const createInventory = async (req, res) => {
+const createOrder = async (req, res) => {
   try { 
-    /*
-    const itemID = req.body.itemId;
-    console.log(itemID);
-    const foundInventory = await Inventory.findAll(
+    const Name = req.body.name;
+    console.log(Name);
+    const foundOrder = await Order.findAll(
       {
         where: {
-          itemId : itemID
+          name : Name
         }
-      })
-      console.log(foundInventory);
-    if(foundInventory.length) {
+      });
+
+      console.log(foundOrder);
+    if(foundOrder.length) {
       res.status(400).json({
         msg : "Bad request",
         status : 400,
         body : "name already exist"
       });
       return;
-    }*/ 
-    const inventory = await Inventory.create(req.body);
-    return res.json(inventory);
+    } 
+    const order = await Order.create(req.body);
+    return res.json(order);
     
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -75,7 +65,7 @@ const createInventory = async (req, res) => {
 };
 
 //modificar
-const editInventory = async (req, res) => {
+const editOrder = async (req, res) => {
   try {
     const keysReq = Object.keys(req.body);
     keysReq.sort();
@@ -88,18 +78,18 @@ const editInventory = async (req, res) => {
         return;
       }
     const id = req.params.id
-    const updateInventory = await Inventory.update(
+    const updateOrder = await Order.update(
       req.body,
       {
         where: {
           id : id
         }
       });
-    validateInventory(updateInventory);
+    validateOrder(updateOrder);
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : updateInventory
+      body : updateOrder
     });
   }
   catch(error){
@@ -108,21 +98,21 @@ const editInventory = async (req, res) => {
 };
 
 // modificar parcialmente
-const partialEditInventory = async (req, res) => {
+const partialEditOrder = async (req, res) => {
   try {
     const id = req.params.id
-    const updateInventory = await Inventory.update(
+    const updateOrder = await Order.update(
       req.body,
       {
         where: {
           id : id
         }
       });
-    validateInventory(updateInventory);
+    validateOrder(updateOrder);
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : updateInventory
+      body : updateOrder
     });
   }
   catch(error){
@@ -131,19 +121,19 @@ const partialEditInventory = async (req, res) => {
 };
 
 //eliminar
-const deleteInventory = async (req, res) => {
+const deleteOrder = async (req, res) => {
   try{
     const id = req.params.id
-    const deleteInventory = await Inventory.destroy({
+    const deleteOrder = await Order.destroy({
       where:{
         id : id
       }
     });
-    validateInventory(deleteInventory);
+    validateOrder(deleteOrder);
     return res.status(200).json({
       ok : true,
       status : 200,
-      body : deleteInventory
+      body : deleteOrder
     });
   } catch (error){
     return res.status(500).json({ message: error.message });
@@ -151,10 +141,10 @@ const deleteInventory = async (req, res) => {
 }
 
   module.exports = {
-    getInventories,
-    createInventory,
-    editInventory,
-    partialEditInventory,
-    deleteInventory,
-    getInventory
+    getOrders,
+    createOrder,
+    editOrder,
+    partialEditOrder,
+    deleteOrder,
+    getOrder
   };

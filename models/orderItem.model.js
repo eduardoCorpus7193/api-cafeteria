@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
           unique: true,
           references: {
             model: 'orders',
-            kay: 'id'
+            key: 'id'
           }
         },
         itemId: {
@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize) => {
           unique: true,
           references: {
             model: 'menuItems',
-            kay: 'id'
+            key: 'id'
           }
         },
         quantity: {
