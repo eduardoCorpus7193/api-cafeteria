@@ -63,7 +63,7 @@ const createOrderItem = async (req, res) => {
     const foundInventory = await Inventory.findOne(
       {
         where: {
-          id : ID
+          itemId : ID
         }
       });
       console.log(foundInventory);
@@ -82,14 +82,14 @@ const editOrderItem = async (req, res) => {
   try {
     const keysReq = Object.keys(req.body);
     keysReq.sort();
-    if(!keysReq.every(isTheSameArray)){
-        res.status(400).json({
-          msg : "Bad request",
-          status : 400,
-          body : "Missing parameters"
-        });
-        return;
-      }
+    // if(!keysReq.every(isTheSameArray)){
+    //     res.status(400).json({
+    //       msg : "Bad request",
+    //       status : 400,
+    //       body : "Missing parameters"
+    //     });
+    //     return;
+    //   }
     const id = req.params.id
     const updateOrderItem = await OrderItem.update(
       req.body,
@@ -98,7 +98,7 @@ const editOrderItem = async (req, res) => {
           id : id
         }
       });
-    validateBook(updateOrderItem);
+    validateOrderItem(updateOrderItem);
     return res.status(200).json({
       ok : true,
       status : 200,
@@ -139,7 +139,7 @@ const partialEditOrderItem = async (req, res) => {
           id : id
         }
       });
-    validateBook(OrderItemBook);
+    validateOrderItem(OrderItem);
     return res.status(200).json({
       ok : true,
       status : 200,

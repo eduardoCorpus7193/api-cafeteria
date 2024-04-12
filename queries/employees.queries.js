@@ -88,14 +88,14 @@ const editEmployee = async (req, res) => {
   try {
     const keysReq = Object.keys(req.body);
     keysReq.sort();
-    if(!keysReq.every(isTheSameArray)){
-        res.status(400).json({
-          msg : "Bad request",
-          status : 400,
-          body : "Missing parameters"
-        });
-        return;
-      }
+    // if(!keysReq.every(isTheSameArray)){
+    //     res.status(400).json({
+    //       msg : "Bad request",
+    //       status : 400,
+    //       body : "Missing parameters"
+    //     });
+    //     return;
+    //   }
     const id = req.params.id
     const updateEmployee = await Employee.update(
       req.body,

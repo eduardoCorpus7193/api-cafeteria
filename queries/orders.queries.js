@@ -1,6 +1,6 @@
 const db = require("../db.js");
 
-const Order = db.orders;
+const Order = db.order;
 const keysArr = ["itemId", "quantity", "unit", "expiryDate"];
 keysArr.sort();
 
@@ -37,25 +37,7 @@ const getOrder = async (req, res) => {
 
 // Crear nuevo
 const createOrder = async (req, res) => {
-  try { 
-    const Name = req.body.name;
-    console.log(Name);
-    const foundOrder = await Order.findAll(
-      {
-        where: {
-          name : Name
-        }
-      });
-
-      console.log(foundOrder);
-    if(foundOrder.length) {
-      res.status(400).json({
-        msg : "Bad request",
-        status : 400,
-        body : "name already exist"
-      });
-      return;
-    } 
+  try {  
     const order = await Order.create(req.body);
     return res.json(order);
     
@@ -69,14 +51,14 @@ const editOrder = async (req, res) => {
   try {
     const keysReq = Object.keys(req.body);
     keysReq.sort();
-    if(!keysReq.every(isTheSameArray)){
-        res.status(400).json({
-          msg : "Bad request",
-          status : 400,
-          body : "Missing parameters"
-        });
-        return;
-      }
+    // if(!keysReq.every(isTheSameArray)){
+    //     res.status(400).json({
+    //       msg : "Bad request",
+    //       status : 400,
+    //       body : "Missing parameters"
+    //     });
+    //     return;
+    //   }
     const id = req.params.id
     const updateOrder = await Order.update(
       req.body,

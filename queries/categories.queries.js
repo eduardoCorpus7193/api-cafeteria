@@ -78,14 +78,14 @@ const editCategory = async (req, res) => {
   try {
     const keysReq = Object.keys(req.body);
     keysReq.sort();
-    if(!keysReq.every(isTheSameArray)){
-        res.status(400).json({
-          msg : "Bad request",
-          status : 400,
-          body : "Missing parameters"
-        });
-        return;
-      }
+    //if(!keysReq.every(isTheSameArray)){
+      //  res.status(400).json({
+       //   msg : "Bad request",
+        //  status : 400,
+        //  body : "Missing parameters category"
+        //});
+       // return;
+      //}
     const id = req.params.id
     const updateCategory = await Category.update(
       req.body,

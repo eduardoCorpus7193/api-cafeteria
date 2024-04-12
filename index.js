@@ -210,15 +210,15 @@ app.post("/category", (req, res) => {
 });
   
 app.put("/category/:id", (req, res) => {
-  editCategory(req, res)
+  editCategory(req, res);
 });
   
 app.delete("/category/:id", (req, res) => {
-  deleteCategory(req, res)
+  deleteCategory(req, res);
 });
   
 app.patch("/category/:id", (req, res) => {
-  partialEditCategory(req, res)
+  partialEditCategory(req, res);
 });
     
 
@@ -227,6 +227,7 @@ app.get("/menuItem/:id", (req, res) => {
   getMenuItem(req, res);
 });
   
+//filter by category
 app.get("/getMenuItemCategory/:id", (req, res) => {
   getMenuItemCategory(req, res);
 });
@@ -283,7 +284,7 @@ app.get("/orderItem/:id", (req, res) => {
   getOrderItem(req, res);
 });
   
-app.get("/orderItem", (req, res) => {
+app.get("/orderItems", (req, res) => {
   getOrderItems(req, res);
 });
 
